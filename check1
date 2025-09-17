@@ -72,22 +72,22 @@ end
 
 local timeStr, dateStr = getThaiTime()
 
-local embed1 = {
-    title = "Eggs and Fruits of: " .. who,
+local embed = {
+    title = "ไข่และผลไม้ในตัว : " .. who,
     color = 0x00FF00,
     fields = {
         {
-            name = "Eggs",
-            value = (#eggLines > 0 and "```\n" .. table.concat(eggLines, ", ") .. "```") or "-",
+            name = "ไข่",
+            value = (#eggLines > 0 and "```\n" .. table.concat(eggLines, "\n") .. "```") or "-",
             inline = false
         },
         {
-            name = "Fruits",
-            value = (#fruitLines > 0 and "```\n" .. table.concat(fruitLines, ", ") .. "```") or "-",
+            name = "ผลไม้",
+            value = (#fruitLines > 0 and "```\n" .. table.concat(fruitLines, "\n") .. "```") or "-",
             inline = false
         }
     },
-    footer = { text = "Time " .. timeStr .. " | Date " .. dateStr .. " (TH)" }
+    footer = { text = "เวลา " .. timeStr .. " | วันที่ " .. dateStr .. "" }
 }
 
 
@@ -98,7 +98,9 @@ pcall(function()
         Headers = {["Content-Type"] = "application/json"},
         Body = Http:JSONEncode({
             username = "Inventory Scanner",
-            embeds = {embed1}
+            embeds = {
+                embed
+            }
         })
     })
 end)
