@@ -1,5 +1,5 @@
 getgenv().Configuration = {
-    WEBHOOK = [[https://discord.com/api/webhooks/1417682636809306243/M8k-VYMEPTPq7lgEzQbadLFKlSGWdEqCh5amr3PYocUU56GXnbbN3dV2rZ6n-sPwLqgg]],
+    WEBHOOK = "https://discord.com/api/webhooks/1417682636809306243/M8k-VYMEPTPq7lgEzQbadLFKlSGWdEqCh5amr3PYocUU56GXnbbN3dV2rZ6n-sPwLqgg",
     USE_DISPLAY_NAME = true,
     STATUS_ORDER = {"Golden", "Diamond", "Electric", "Fire", "Jurassic", "Normal"}
 }
