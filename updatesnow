@@ -51,7 +51,7 @@ for egg, byStatus in pairs(eggCounts) do
     local parts = {}
     for _, s in ipairs(cfg.STATUS_ORDER) do
         local c = byStatus[s]
-        if c then table.insert(parts, s.." "..c.." pcs") end
+        if c then table.insert(parts, s.." "..c.." ฟอง") end
     end
     local statusText = (#parts > 0 and "\n -> " .. table.concat(parts, " / ")) or ""
     table.insert(eggLines, egg .. " x" .. total .. statusText)
