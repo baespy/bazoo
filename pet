@@ -1,0 +1,73 @@
+getgenv().Configuration = {
+    WEBHOOK = "https://discord.com/api/webhooks/1419643637192589363/MPcUHiIkRnnAlNCMUZ4Z9L-pA6zDzqpyHCuPCbXKTueUJwdw9bHbeg_123rdoDQc6R7T",
+    USE_DISPLAY_NAME = true,
+}
+
+local Http = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local plr = Players.LocalPlayer
+local cfg = getgenv().Configuration
+local url = tostring(cfg.WEBHOOK or "")
+if url == "" then return end
+local req = (syn and syn.request) or (http and http.request) or http_request or request
+if not req then return end
+local who = cfg.USE_DISPLAY_NAME and (plr.DisplayName or plr.Name) or plr.Name
+
+local function getThaiTime()
+    local utc = os.time(os.date("!*t"))
+    local thTime = os.date("*t", utc + (11*60*60))
+    return string.format("%02d:%02d:%02d", thTime.hour, thTime.min, thTime.sec),
+           string.format("%d/%d/%d", thTime.month, thTime.day, thTime.year)
+end
+
+local petLines, rangeCount = {}, {}
+local scroll = plr.PlayerGui.ScreenStorage.Frame.ContentPet.ScrollingFrame
+for _, pet in ipairs(scroll:GetChildren()) do
+    local btn = pet:FindFirstChild("BTN")
+    if btn and btn:IsA("ImageButton") and not (btn:FindFirstChild("Big") and btn.Big.Visible) then
+        local val = btn:FindFirstChild("Stat") and btn.Stat.Price and btn.Stat.Price.Value
+        if val and val:IsA("TextLabel") then
+            local raw = tostring(val.Text or ""):gsub("%D", "")
+            local price = tonumber(raw)
+            if price and price >= 19000 then
+                local k = math.floor(price / 1000)
+                rangeCount[k] = (rangeCount[k] or 0) + 1
+            end
+        end
+    end
+end
+for k = 19, 299 do
+    if rangeCount[k] then
+        table.insert(petLines, tostring(k).."K จำนวน "..rangeCount[k].." ตัว")
+    end
+end
+
+local timeStr, dateStr = getThaiTime()
+
+local embed = {
+    title = "สัตว์ของ : " .. who,
+    color = 0x00FF00,
+    fields = {
+        {
+            name = "สัตว์",
+            value = (#petLines > 0 and "```\n" .. table.concat(petLines, "\n") .. "```") or "ไม่พบสัตว์ที่มีราคาตั้งแต่ 19K ขึ้นไป",
+            inline = false
+        }
+    },
+    footer = { text = "เวลา " .. timeStr .. " | วันที่ " .. dateStr }
+}
+
+
+pcall(function()
+    req({
+        Url = url,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = Http:JSONEncode({
+            username = "Pet Scanner",
+            embeds = {
+                embed
+            }
+        })
+    })
+end)
