@@ -86,9 +86,9 @@ local SHOW_UID = false
 
 local function formatPetLine(pType, muta, ps, uid)
 	if SHOW_UID and uid then
-		return string.format("%s | %s — %s / sec (UID: %s)", tostring(pType), tostring(muta), tostring(ps or 0), tostring(uid))
+		return string.format("%s | %s —> %s / sec (UID: %s)", tostring(pType), tostring(muta), tostring(ps or 0), tostring(uid))
 	else
-		return string.format("%s | %s — %s / sec", tostring(pType), tostring(muta), tostring(ps or 0))
+		return string.format("%s | %s —> %s / sec", tostring(pType), tostring(muta), tostring(ps or 0))
 	end
 end
 
@@ -366,7 +366,7 @@ end
 local function counterToLines(counter)
 	local items = {}
 	for key, n in pairs(counter) do
-		table.insert(items, string.format("%s — x%d", key, n))
+		table.insert(items, string.format("%s —> x%d", key, n))
 	end
 	table.sort(items, function(a, b) return a:lower() < b:lower() end)
 	return items
@@ -442,7 +442,7 @@ local function collectPetCounts()
 
 	local items = {}
 	for key, n in pairs(counter) do
-		table.insert(items, string.format("%s — x%d", key, n))
+		table.insert(items, string.format("%s —> x%d", key, n))
 	end
 	table.sort(items, function(a, b) return a:lower() < b:lower() end)
 	return items
@@ -464,7 +464,7 @@ local function collectEggs()
 
 	local items = {}
 	for key, count in pairs(counter) do
-		table.insert(items, string.format("%s — x%d", key, count))
+		table.insert(items, string.format("%s —> x%d", key, count))
 	end
 	table.sort(items)
 	return items
@@ -482,7 +482,7 @@ end
 
 -- === ส่งเป็น 3 ข้อความ แยกส่วนชัดเจน ===
 local function sendAll()
-	local header = ("📦 Inventory ของ **%s**"):format(Player.Name)
+	local header = ("กระเป๋า ของ **%s**"):format(Player.Name)
 	SendMessage(header)
 
 	local placed, inv = collectPets()
@@ -515,12 +515,12 @@ local function sendAll()
 		end
 	end
 
-	sendLong("🐾 **Pets (สัตว์ที่วางอยู่: ประเภท | กลายพันธ์ุ | เงินที่ได้ต่อวินาที)**", placed)
-	sendLong("📦 **Pets (สัตว์ในกระเป๋า: ประเภท | กลายพันธ์ุ | เงินที่ได้ต่อวินาที)**", inv)
-	sendLong("🔢 **Pet Counts — สัตว์ที่วางอยู่ (Type | Mutate)**", placedCounts)
-	sendLong("🔢 **Pet Counts — สัตว์ในกระเป๋า (Type | Mutate)**", invCounts)
-	sendLong("🥚 **Eggs (ประเภท | กลายพันธ์ุ)**", eggs)
-	sendLong("🍖 **Foods**", foods)
+	sendLong("**Pets (สัตว์ที่วางอยู่: ประเภท | กลายพันธ์ุ | เงินที่ได้ต่อวินาที)**", placed)
+	sendLong("**Pets (สัตว์ในกระเป๋า: ประเภท | กลายพันธ์ุ | เงินที่ได้ต่อวินาที)**", inv)
+	sendLong("**Pet Counts —> สัตว์ที่วางอยู่ (Type | Mutate)**", placedCounts)
+	sendLong("**Pet Counts —> สัตว์ในกระเป๋า (Type | Mutate)**", invCounts)
+	sendLong("**Eggs (ประเภท | กลายพันธ์ุ)**", eggs)
+	sendLong("**Foods**", foods)
 end
 
 -- เรียกครั้งเดียว
